@@ -3,4 +3,9 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_add_city">AddCity</string>
+    <string name="title_activity_city_data">CityData</string>
+    <string name="noData">There is not data to be presented. Please add cities by pressing the button downbellow...</string>
+    <string name="addACity">Add a new city</string>
+    <string name="addcitybuttontext">Submit</string>
 </resources>

@@ -16,6 +16,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Activities.AddCity"
+            android:label="@string/title_activity_add_city"
+            android:parentActivityName=".MainActivity"
+            >
+        </activity>
+        <activity
+            android:name=".Activities.CityData"
+            android:label="@string/title_activity_city_data" >
+        </activity>
     </application>
 
 </manifest>
