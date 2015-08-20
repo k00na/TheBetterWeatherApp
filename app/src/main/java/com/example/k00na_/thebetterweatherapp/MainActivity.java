@@ -10,19 +10,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.k00na_.thebetterweatherapp.Activities.AddCity;
 import com.example.k00na_.thebetterweatherapp.Activities.CityData;
 import com.example.k00na_.thebetterweatherapp.Model.WeatherData;
+import com.example.k00na_.thebetterweatherapp.Util.WeatherDataJSONSerializer;
 
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,12 +34,25 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton FAB;
     private static final int REQUEST_CITY = 11;
     private RecyclersAdapter mRecyclersAdapter;
+    private static final String mFileName = "weatherdata.json";
+    private WeatherDataJSONSerializer jsonSerializer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*
+
+        try {
+            weatherDataList = jsonSerializer.loadWeatherData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        */
         mRecyclersAdapter = new RecyclersAdapter(weatherDataList, this);
 
 
@@ -97,10 +109,15 @@ public class MainActivity extends AppCompatActivity {
                     mRecyclersAdapter.addToList(wd, mRecyclersAdapter.getListSize());
                     Log.i("checkList", "List size is " + weatherDataList.size());
                     isThereData.setText(R.string.listOfCities);
+                    jsonSerializer.saveWeatherData(mRecyclersAdapter.getAdaptersData());
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.i("checkList", "Shit went wrong: " + e);
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
                 }
 
             }
@@ -118,6 +135,10 @@ public class MainActivity extends AppCompatActivity {
 
         public int getListSize(){
             return adaptersData.size();
+        }
+
+        public List<WeatherData> getAdaptersData() {
+            return adaptersData;
         }
 
         public RecyclersAdapter(List<WeatherData> data, Context context){
