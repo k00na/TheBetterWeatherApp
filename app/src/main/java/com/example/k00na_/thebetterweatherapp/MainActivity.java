@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         public RecyclersAdapter(List<WeatherData> data, Context context){
 
-            
+
 
         }
 
