@@ -1,39 +1,54 @@
 package com.example.k00na_.thebetterweatherapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.k00na_.thebetterweatherapp.Activities.AddCity;
+import com.example.k00na_.thebetterweatherapp.Activities.CityData;
 import com.example.k00na_.thebetterweatherapp.Model.WeatherData;
 
+import org.json.JSONException;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private List<WeatherData> weatherData;
+    private static List<WeatherData> weatherDataList = new ArrayList<WeatherData>();
     private TextView isThereData;
     private FloatingActionButton FAB;
+    private static final int REQUEST_CITY = 11;
+    private RecyclersAdapter mRecyclersAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mRecyclersAdapter = new RecyclersAdapter(weatherDataList, this);
 
 
         mRecyclerView = (RecyclerView)findViewById(R.id.recyclerViewID);
+        mRecyclerView.setAdapter(mRecyclersAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
         isThereData = (TextView)findViewById(R.id.dataOrNotTextView);
         FAB = (FloatingActionButton)findViewById(R.id.fab);
 
@@ -41,30 +56,80 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), AddCity.class);
-                startActivity(i);
+                startActivityForResult(i, REQUEST_CITY);
 
             }
         });
+        /*
+            getting JSON data
+         */
+
+        Intent i = getIntent();
+        String JSONfromAddCity = i.getStringExtra("JSON");
+        if(JSONfromAddCity != null){
+
+            try {
+                WeatherData weatherData = new WeatherData(JSONfromAddCity);
+                weatherDataList.add(weatherData);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
 
 
 
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_CITY){
+            Log.i("checkList", "request = OK");
+            if(resultCode == Activity.RESULT_OK){
+                Log.i("checkList", "result = OK");
+                String getJSON = data.getStringExtra("JSON");
+                try {
+                    WeatherData wd = new WeatherData(getJSON);
+                    mRecyclersAdapter.addToList(wd, mRecyclersAdapter.getListSize());
+                    Log.i("checkList", "List size is " + weatherDataList.size());
+                    isThereData.setText(R.string.listOfCities);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.i("checkList", "Shit went wrong: " + e);
+                }
+
+            }
+
+        }
+    }
 
     /*
-            ADAPTER
-     */
+                ADAPTER
+         */
     class RecyclersAdapter extends RecyclerView.Adapter<RowData>{
 
         private LayoutInflater mLayoutInflater;
         private List<WeatherData> adaptersData = Collections.emptyList();
+
+        public int getListSize(){
+            return adaptersData.size();
+        }
 
         public RecyclersAdapter(List<WeatherData> data, Context context){
 
             mLayoutInflater = LayoutInflater.from(context);
             adaptersData = data;
 
+        }
+
+        public void addToList(WeatherData wd, int pos){
+            adaptersData.add(wd);
+            notifyItemInserted(pos);
         }
 
 
@@ -102,11 +167,30 @@ public class MainActivity extends AppCompatActivity {
             cityName = (TextView)itemView.findViewById(R.id.cityNameTextView);
             cityDegrees = (TextView)itemView.findViewById(R.id.cityDegreesTextView);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    WeatherData wd = weatherDataList.get(getAdapterPosition());
+
+                    String cityN = wd.getCityName();
+                    String cityTemp = "" + wd.getTemp();
+                    String cityHum = "" + wd.getHumidty();
+                    String cityDesc = wd.getDescription();
+                    String[] data = {cityN, cityTemp, cityHum, cityDesc};
+
+                    Intent i = new Intent(getApplicationContext(), CityData.class);
+                    i.putExtra("dataArray", data);
+                    startActivity(i);
+                }
+            });
+
         }
+
+
     }
 
-
-
-
-
+    public static List<WeatherData> getWeatherDataList() {
+        return weatherDataList;
+    }
 }

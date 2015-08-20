@@ -16,12 +16,14 @@
         android:textAppearance="?android:textAppearanceLarge"
         android:id="@+id/dataOrNotTextView"
 
+
         />
 
 
 
 
     <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="45dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/recyclerViewID"

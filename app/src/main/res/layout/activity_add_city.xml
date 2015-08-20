@@ -3,6 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+              style="@style/AppTheme"
                 tools:context="com.example.k00na_.thebetterweatherapp.Activities.AddCity">
 
     <android.support.v7.widget.Toolbar

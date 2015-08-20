@@ -1,23 +1,44 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:orientation="vertical"
+              android:gravity="center"
+
+              style="@style/AppTheme"
                 tools:context="com.example.k00na_.thebetterweatherapp.Activities.CityData">
 
+
+
     <TextView
-        android:text="@string/hello_world"
+        android:textSize="45sp"
+        android:id="@+id/cityName"
+        android:text="ss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:textAppearanceLarge"/>
+
+    <TextView
+        android:textSize="45sp"
+        android:text="ss"
+        android:id="@+id/temperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/toolbarXMLidCityData"
-        style="@style/MyCustomToolbarSTyle"
-        ></android.support.v7.widget.Toolbar>
+    <TextView
+        android:textSize="45sp"
+        android:text="ss"
+        android:id="@+id/humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
-</RelativeLayout>
+    <TextView
+        android:textSize="45sp"
+        android:text="ss"
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+
+</LinearLayout>

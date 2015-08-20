@@ -1,6 +1,8 @@
 package com.example.k00na_.thebetterweatherapp.Activities;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.NavUtils;
@@ -127,8 +129,19 @@ public class AddCity extends AppCompatActivity {
                             }
                         });
 
+                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        i.putExtra("JSON", jsonFromWeb);
+                        setResult(Activity.RESULT_OK, i);
+                        finish();
+
+
+
+
+
 
                     }
+                    else
+                        Toast.makeText(getApplicationContext(), "The response was not successful", Toast.LENGTH_LONG).show();
 
                 }
             });

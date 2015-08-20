@@ -1,5 +1,6 @@
 package com.example.k00na_.thebetterweatherapp.Model;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,19 +14,30 @@ public class WeatherData {
     private double temp;
     private int humidty;
 
+    public WeatherData(){
+
+    }
+
 
     public WeatherData(String jsonString) throws JSONException{
 
         JSONObject allData = new JSONObject(jsonString);
 
+        JSONArray weatherArray = allData.getJSONArray("weather");
+        JSONObject fromArrray = weatherArray.getJSONObject(0);
+        description = fromArrray.getString("description");
+
         cityName = allData.getString("name");
 
-        JSONObject weather = allData.getJSONObject("weather");
-        description = weather.getString("description");
+
+
 
         JSONObject main = allData.getJSONObject("main");
 
         temp = main.getDouble("temp");
+        temp = (int) Math.round(temp - 273.15);
+
+
         humidty = main.getInt("humidity");
 
     }

@@ -8,4 +8,5 @@
     <string name="noData">There is not data to be presented. Please add cities by pressing the button downbellow...</string>
     <string name="addACity">Add a new city</string>
     <string name="addcitybuttontext">Submit</string>
+    <string name="listOfCities">List Of Cities:</string>
 </resources>
